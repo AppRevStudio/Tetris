@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// enums for each tetromino shape
 public enum Tetromino
 {
     I,
@@ -19,6 +20,7 @@ public struct TetrominoData
     public Tile tile;
     public Vector2Int[] cells { get; private set; }
 
+    // sets the cells of the tetromino shape by fetching them from dictionary
     public void Initialize()
     {
         this.cells = Data.Cells[this.tetromino];

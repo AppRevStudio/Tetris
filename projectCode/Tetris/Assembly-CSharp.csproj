@@ -59,6 +59,7 @@
     <Compile Include="Assets\Scripts\Tetromino.cs" />
     <Compile Include="Assets\Scripts\Data.cs" />
     <Compile Include="Assets\Scripts\Board.cs" />
+    <Compile Include="Assets\Scripts\Piece.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
