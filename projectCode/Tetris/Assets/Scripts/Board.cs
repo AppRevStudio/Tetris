@@ -44,7 +44,20 @@ public class Board : MonoBehaviour
 
         // get reference to game piece
         this.activePiece.Initialize(this, this.spawnPos, data);
-        Set(this.activePiece);
+
+        if (isValidPosition(this.activePiece, this.spawnPos))
+        {
+            Set(this.activePiece);
+        }
+        else
+        {
+            GameOver();
+        }
+    }
+
+    private void GameOver()
+    {
+        this.tilemap.ClearAllTiles();
     }
 
     // render piece onto board
@@ -90,5 +103,68 @@ public class Board : MonoBehaviour
         }
 
         return true;
+    }
+
+    // checks if any lines full, for each full row it clears the line and shifts everything down
+    public void ClearLines()
+    {
+        RectInt bounds = this.Bounds;
+        int row = bounds.yMin;
+
+        while (row < bounds.yMax)
+        {
+            if (IsLineFull(row))
+            {
+                LineClear(row);
+            }
+            else
+            {
+                row++;
+            }
+        }
+    }
+
+    // checks to see if row is full of tiles
+    private bool IsLineFull(int row)
+    {
+        RectInt bounds = this.Bounds;
+
+        for (int col = bounds.xMin; col < bounds.xMax; col++)
+        {
+            Vector3Int pos = new Vector3Int(col, row, 0);
+
+            if (!this.tilemap.HasTile(pos))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // clears a full row of tiles and shifts everything else down once
+    private void LineClear(int row)
+    {
+        RectInt bounds = this.Bounds;
+
+        for (int col = bounds.xMin; col < bounds.xMax; col++) // loops through and clears row
+        {
+            Vector3Int pos = new Vector3Int(col, row, 0);
+            this.tilemap.SetTile(pos, null);
+        }
+
+        while (row < bounds.yMax)
+        {
+            for (int col = bounds.xMin; col < bounds.xMax; col++)
+            {
+                Vector3Int pos = new Vector3Int(col, row + 1, 0);
+                TileBase above = this.tilemap.GetTile(pos);
+
+                pos = new Vector3Int(col, row, 0);
+                this.tilemap.SetTile(pos, above);
+            }
+
+            row++;
+        }
     }
 }
