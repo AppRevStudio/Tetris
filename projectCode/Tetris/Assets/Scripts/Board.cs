@@ -9,6 +9,9 @@ public class Board : MonoBehaviour
     public Vector3Int spawnPos;
     public Vector2Int boardSize = new Vector2Int(10, 20);
 
+    private int nextPieceIndex = -1;
+    public Vector3Int nextSpawnPos;
+
     public RectInt Bounds
     {
         get
@@ -38,9 +41,19 @@ public class Board : MonoBehaviour
     // pick random piece to spawn
     public void SpawnPiece()
     {
-        // pick random index within tetrominos, fetch that tetromino
-        int random = Random.Range(0, this.tetrominos.Length);
-        TetrominoData data = this.tetrominos[random];
+        TetrominoData data;
+
+        if (nextPieceIndex == -1)
+        {
+            int random = Random.Range(0, this.tetrominos.Length);
+            data = this.tetrominos[random];
+        }
+        else
+        {
+            data = this.tetrominos[nextPieceIndex];
+        }
+
+        SelectPiece();
 
         // get reference to game piece
         this.activePiece.Initialize(this, this.spawnPos, data);
@@ -52,6 +65,35 @@ public class Board : MonoBehaviour
         else
         {
             GameOver();
+        }
+    }
+
+    // Selects the next piece to be played and displays it
+    private void SelectPiece()
+    {
+        TetrominoData priorData;
+
+        if (!(nextPieceIndex == -1)) // if prior nextPiece is displayed, clear it
+        {
+            priorData = this.tetrominos[nextPieceIndex];
+
+            for (int i = 0; i < priorData.cells.Length; i++)
+            {
+                Vector3Int tilePos = (Vector3Int)priorData.cells[i] + (Vector3Int)nextSpawnPos;
+                this.tilemap.SetTile(tilePos, null);
+            }
+        }
+
+        // pick random index within tetrominos, fetch that tetromino
+        int random = Random.Range(0, this.tetrominos.Length);
+        nextPieceIndex = random;
+
+        TetrominoData data = this.tetrominos[nextPieceIndex];
+
+        for (int i = 0; i < data.cells.Length; i++) // render nextPiece
+        {
+            Vector3Int tilePos = (Vector3Int)data.cells[i] + (Vector3Int)nextSpawnPos;
+            this.tilemap.SetTile(tilePos, data.tile);
         }
     }
 
