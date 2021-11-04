@@ -17,9 +17,12 @@ public class Board : MonoBehaviour
     private TMPro.TMP_Text levelText;
     [SerializeField]
     private TMPro.TMP_Text rowClearText;
+    [SerializeField]
+    private TMPro.TMP_Text currentScoreText;
 
     private int currentLevel = 0;
     private int rowsCleared = 0;
+    private int currentScore = 0;
 
     public RectInt Bounds
     {
@@ -46,6 +49,7 @@ public class Board : MonoBehaviour
     {
         levelText.text = currentLevel.ToString();
         rowClearText.text = rowsCleared.ToString();
+        currentScoreText.text = currentScore.ToString();
 
         SpawnPiece();
     }
@@ -164,6 +168,7 @@ public class Board : MonoBehaviour
     {
         RectInt bounds = this.Bounds;
         int row = bounds.yMin;
+        int linesCleared = 0;
 
         while (row < bounds.yMax)
         {
@@ -173,12 +178,18 @@ public class Board : MonoBehaviour
                 rowsCleared++;
                 rowClearText.text = rowsCleared.ToString();
 
+                linesCleared++;
                 CalculateLevel();
             }
             else
             {
                 row++;
             }
+        }
+
+        if (linesCleared != 0)
+        {
+            CalculateScore(linesCleared);
         }
     }
 
@@ -230,5 +241,29 @@ public class Board : MonoBehaviour
     {
         currentLevel = rowsCleared / 10;
         levelText.text = currentLevel.ToString();
+    }
+
+    private void CalculateScore(int linesCleared)
+    {
+        switch(linesCleared)
+        {
+            case 1:
+                currentScore += (40 * (currentLevel + 1));
+                break;
+            case 2:
+                currentScore += (100 * (currentLevel + 1));
+                break;
+            case 3:
+                currentScore += (300 * (currentLevel + 1));
+                break;
+            case 4:
+                currentScore += (1200 * (currentLevel + 1));
+                break;
+            default:
+                Debug.LogError("Invalid LinesCleared case! Board script --> CalculateScore Method");
+                break;
+        }
+
+        currentScoreText.text = currentScore.ToString();
     }
 }
