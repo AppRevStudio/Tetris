@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class Board : MonoBehaviour
 {
@@ -11,6 +12,14 @@ public class Board : MonoBehaviour
 
     private int nextPieceIndex = -1;
     public Vector3Int nextSpawnPos;
+
+    [SerializeField]
+    private TMPro.TMP_Text levelText;
+    [SerializeField]
+    private TMPro.TMP_Text rowClearText;
+
+    private int currentLevel = 0;
+    private int rowsCleared = 0;
 
     public RectInt Bounds
     {
@@ -35,6 +44,9 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        levelText.text = currentLevel.ToString();
+        rowClearText.text = rowsCleared.ToString();
+
         SpawnPiece();
     }
 
@@ -158,6 +170,10 @@ public class Board : MonoBehaviour
             if (IsLineFull(row))
             {
                 LineClear(row);
+                rowsCleared++;
+                rowClearText.text = rowsCleared.ToString();
+
+                CalculateLevel();
             }
             else
             {
@@ -208,5 +224,11 @@ public class Board : MonoBehaviour
 
             row++;
         }
+    }
+
+    private void CalculateLevel()
+    {
+        currentLevel = rowsCleared / 10;
+        levelText.text = currentLevel.ToString();
     }
 }
