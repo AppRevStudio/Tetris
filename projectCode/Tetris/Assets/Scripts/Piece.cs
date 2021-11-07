@@ -39,6 +39,11 @@ public class Piece : MonoBehaviour
 
     private void Update()
     {
+        if (this.board.IsGameOver())
+        {
+            return;
+        }
+
         this.board.Clear(this);
 
         this.lockTime += Time.deltaTime;

@@ -24,6 +24,10 @@ public class Board : MonoBehaviour
     private int rowsCleared = 0;
     private int currentScore = 0;
 
+    private bool gameOver = false;
+    [SerializeField]
+    private GameObject gameOverPanel;
+
     public RectInt Bounds
     {
         get
@@ -51,12 +55,19 @@ public class Board : MonoBehaviour
         rowClearText.text = rowsCleared.ToString();
         currentScoreText.text = currentScore.ToString();
 
+        gameOverPanel.SetActive(false);
+
         SpawnPiece();
     }
 
     // pick random piece to spawn
     public void SpawnPiece()
     {
+        if (gameOver)
+        {
+            return;
+        }
+
         TetrominoData data;
 
         if (nextPieceIndex == -1)
@@ -115,7 +126,14 @@ public class Board : MonoBehaviour
 
     private void GameOver()
     {
-        this.tilemap.ClearAllTiles();
+        gameOver = true;
+
+        gameOverPanel.SetActive(true);
+    }
+
+    public bool IsGameOver()
+    {
+        return gameOver;
     }
 
     // render piece onto board
