@@ -23,6 +23,10 @@ public class MenuController : MonoBehaviour
     private GameObject homePanel;
     [SerializeField]
     private GameObject statsPanel;
+    [SerializeField]
+    private GameObject settingsPanel;
+    [SerializeField] 
+    private GameObject confirmationPanel;
 
     [SerializeField]
     private TMPro.TMP_Text highScoreText;
@@ -37,6 +41,10 @@ public class MenuController : MonoBehaviour
     int minutes;
     int hours;
 
+    [SerializeField]
+    private Slider volume;
+    private VolumeSlider volumeSlider;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,8 +52,11 @@ public class MenuController : MonoBehaviour
         nextFrameTime = Time.time + frameDelay;
         nextCycleTime = Time.time;
 
-        homePanel.SetActive(true);
+        //homePanel.SetActive(true);
         statsPanel.SetActive(false);
+        confirmationPanel.SetActive(false);
+
+        volumeSlider = volume.GetComponent<VolumeSlider>();
 
         SetupStats();
     }
@@ -92,6 +103,15 @@ public class MenuController : MonoBehaviour
             PlayerPrefs.SetInt("TetrisTimeSpent", 0);
         }
 
+        if (!PlayerPrefs.HasKey("TetrisVolume"))
+        {
+            PlayerPrefs.SetFloat("TetrisVolume", 0.5f);
+        }
+        if (!PlayerPrefs.HasKey("TetrisColor"))
+        {
+            PlayerPrefs.SetInt("TetrisColor", 1);
+        }
+
         highScoreText.text = "High Score: " + PlayerPrefs.GetInt("TetrisHighScore");
         highRowText.text = "Rows Cleared: " + PlayerPrefs.GetInt("TetrisHighRow");
 
@@ -127,6 +147,42 @@ public class MenuController : MonoBehaviour
         }
 
         topTimeText.text = "Longest Game: " + minutes + ":" + secondCounter;
+
+        volumeSlider.UpdateValue(PlayerPrefs.GetFloat("TetrisVolume"));
+        volume.value = PlayerPrefs.GetFloat("TetrisVolume");
+    }
+
+    public void EnableSettingsPanel()
+    {
+        homePanel.SetActive(false);
+        settingsPanel.SetActive(true);
+    }
+
+    public void DisableSettingsPanel()
+    {
+        settingsPanel.SetActive(false);
+        homePanel.SetActive(true);
+    }
+
+    public void EnableConfirmationPanel()
+    {
+        homePanel.SetActive(false);
+        confirmationPanel.SetActive(true);
+    }
+
+    public void DisableConfirmationPanel()
+    {
+        confirmationPanel.SetActive(false);
+        homePanel.SetActive(true);
+    }
+
+    public void DeleteStats()
+    {
+        PlayerPrefs.DeleteAll();
+
+        SetupStats();
+
+        DisableConfirmationPanel();
     }
 
     // Since Unity does not support gifs, I created this method that loops through all of the sprite frames, then waits for a delay before repeating
