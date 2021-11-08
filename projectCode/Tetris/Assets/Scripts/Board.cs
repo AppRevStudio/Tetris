@@ -14,15 +14,25 @@ public class Board : MonoBehaviour
     public Vector3Int nextSpawnPos;
 
     [SerializeField]
+    Tile[] tetrominoTiles;
+    Tile nextTile;
+    bool randomTiles;
+
+    [SerializeField]
     private TMPro.TMP_Text levelText;
     [SerializeField]
     private TMPro.TMP_Text rowClearText;
     [SerializeField]
     private TMPro.TMP_Text currentScoreText;
+    [SerializeField]
+    private TMPro.TMP_Text highScoreText;
 
     private int currentLevel = 0;
     private int rowsCleared = 0;
     private int currentScore = 0;
+    private int highScore = 0;
+
+    float currentTime;
 
     private bool gameOver = false;
     [SerializeField]
@@ -54,10 +64,31 @@ public class Board : MonoBehaviour
         levelText.text = currentLevel.ToString();
         rowClearText.text = rowsCleared.ToString();
         currentScoreText.text = currentScore.ToString();
+        highScore = PlayerPrefs.GetInt("TetrisHighScore");
+        highScoreText.text = highScore.ToString();
+
+        if (PlayerPrefs.GetInt("TetrisColor") == 1)
+        {
+            randomTiles = false;
+        }
+        else
+        {
+            randomTiles = true;
+        } 
 
         gameOverPanel.SetActive(false);
 
         SpawnPiece();
+    }
+
+    private void Update()
+    {
+        if (gameOver)
+        {
+            return;
+        }
+
+        currentTime += Time.deltaTime;
     }
 
     // pick random piece to spawn
@@ -74,10 +105,18 @@ public class Board : MonoBehaviour
         {
             int random = Random.Range(0, this.tetrominos.Length);
             data = this.tetrominos[random];
+            if (randomTiles)
+            {
+                data.tile = GetRandomTile();
+            }
         }
         else
         {
             data = this.tetrominos[nextPieceIndex];
+            if (randomTiles)
+            {
+                data.tile = nextTile;
+            }
         }
 
         SelectPiece();
@@ -117,6 +156,12 @@ public class Board : MonoBehaviour
 
         TetrominoData data = this.tetrominos[nextPieceIndex];
 
+        if (randomTiles)
+        {
+            data.tile = GetRandomTile();
+            nextTile = data.tile;
+        }
+
         for (int i = 0; i < data.cells.Length; i++) // render nextPiece
         {
             Vector3Int tilePos = (Vector3Int)data.cells[i] + (Vector3Int)nextSpawnPos;
@@ -124,9 +169,25 @@ public class Board : MonoBehaviour
         }
     }
 
+    Tile GetRandomTile()
+    {
+        int randomTile = Random.Range(0, tetrominoTiles.Length);
+
+        return tetrominoTiles[randomTile];
+    }
+
     private void GameOver()
     {
         gameOver = true;
+
+        if ((int)currentTime > PlayerPrefs.GetInt("TetrisTopTime"))
+        {
+            PlayerPrefs.SetInt("TetrisTopTime", (int)currentTime);
+        }
+
+        int totalTime = PlayerPrefs.GetInt("TetrisTimeSpent");
+        totalTime += (int)currentTime;
+        PlayerPrefs.SetInt("TetrisTimeSpent", totalTime);
 
         gameOverPanel.SetActive(true);
     }
@@ -259,6 +320,11 @@ public class Board : MonoBehaviour
     {
         currentLevel = rowsCleared / 10;
         levelText.text = currentLevel.ToString();
+
+        if (rowsCleared > PlayerPrefs.GetInt("TetrisHighRow"))
+        {
+            PlayerPrefs.SetInt("TetrisHighRow", rowsCleared);
+        }
     }
 
     private void CalculateScore(int linesCleared)
@@ -283,5 +349,11 @@ public class Board : MonoBehaviour
         }
 
         currentScoreText.text = currentScore.ToString();
+        if (currentScore > highScore)
+        {
+            highScore = currentScore;
+            highScoreText.text = highScore.ToString();
+            PlayerPrefs.SetInt("TetrisHighScore", highScore);
+        }
     }
 }

@@ -2083,9 +2083,18 @@ MonoBehaviour:
   spawnPos: {x: -1, y: 8, z: 0}
   boardSize: {x: 10, y: 20}
   nextSpawnPos: {x: 8, y: 4, z: 0}
+  tetrominoTiles:
+  - {fileID: 11400000, guid: 9f9279e33f3a7874da84c70a4238c21b, type: 2}
+  - {fileID: 11400000, guid: 121c7c490feaaff4ebceaf16787bab51, type: 2}
+  - {fileID: 11400000, guid: 6f5dec3803ed72c4f8d1e2b059363cde, type: 2}
+  - {fileID: 11400000, guid: ac90027cd92746744b34934534e4de31, type: 2}
+  - {fileID: 11400000, guid: f61bc567525735b48b533c3d0f53c1cb, type: 2}
+  - {fileID: 11400000, guid: 8e5204b21a011b24dad922c8dfc776d6, type: 2}
+  - {fileID: 11400000, guid: 5efe2a3f8c2402a40bf4ae94915caf85, type: 2}
   levelText: {fileID: 2091755281}
   rowClearText: {fileID: 1883437294}
   currentScoreText: {fileID: 1812182888}
+  highScoreText: {fileID: 79489989}
   gameOverPanel: {fileID: 32032596}
 --- !u!1 &1871258394
 GameObject:
