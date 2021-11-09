@@ -45,6 +45,10 @@ public class MenuController : MonoBehaviour
     private Slider volume;
     private VolumeSlider volumeSlider;
 
+    AudioSource audSource;
+    [SerializeField]
+    private float menuMusicMultiplier = 0.75f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +61,8 @@ public class MenuController : MonoBehaviour
         confirmationPanel.SetActive(false);
 
         volumeSlider = volume.GetComponent<VolumeSlider>();
+
+        audSource = GetComponent<AudioSource>();
 
         SetupStats();
     }
@@ -150,6 +156,13 @@ public class MenuController : MonoBehaviour
 
         volumeSlider.UpdateValue(PlayerPrefs.GetFloat("TetrisVolume"));
         volume.value = PlayerPrefs.GetFloat("TetrisVolume");
+
+        UpdateMenuMusicVolume();
+    }
+
+    public void UpdateMenuMusicVolume()
+    {
+        audSource.volume = PlayerPrefs.GetFloat("TetrisVolume") * 0.75f;
     }
 
     public void EnableSettingsPanel()

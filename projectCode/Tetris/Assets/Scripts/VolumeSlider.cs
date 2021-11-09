@@ -13,14 +13,18 @@ public class VolumeSlider : MonoBehaviour
 
     private Slider volumeBar;
 
+    private MenuController mc;
+
     // Start is called before the first frame update
     void Start()
     {
         volumeBar = GetComponent<Slider>();
+        mc = FindObjectOfType<MenuController>();
     }
 
     private void OnEnable()
     {
+        mc = FindObjectOfType<MenuController>();
         UpdateValue(PlayerPrefs.GetFloat("TetrisVolume"));
     }
 
@@ -43,6 +47,8 @@ public class VolumeSlider : MonoBehaviour
 
         volumeBar.value = val;
         PlayerPrefs.SetFloat("TetrisVolume", val);
+
+        mc.UpdateMenuMusicVolume();
 
         UpdateColor(val);
     }
