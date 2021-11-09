@@ -122,6 +122,11 @@ public class MenuController : MonoBehaviour
             PlayerPrefs.SetInt("TetrisColor", 1);
         }
 
+        if (!PlayerPrefs.HasKey("TetrisFragments"))
+        {
+            PlayerPrefs.SetInt("TetrisFragments", 0);
+        }
+
         highScoreText.text = "High Score: " + PlayerPrefs.GetInt("TetrisHighScore");
         highRowText.text = "Rows Cleared: " + PlayerPrefs.GetInt("TetrisHighRow");
 

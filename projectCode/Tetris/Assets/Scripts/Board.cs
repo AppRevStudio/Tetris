@@ -27,6 +27,10 @@ public class Board : MonoBehaviour
     private TMPro.TMP_Text currentScoreText;
     [SerializeField]
     private TMPro.TMP_Text highScoreText;
+    [SerializeField]
+    private TMPro.TMP_Text tetrisFragmentText;
+
+    private int fragments;
 
     private int currentLevel = 0;
     private int rowsCleared = 0;
@@ -91,6 +95,9 @@ public class Board : MonoBehaviour
         currentScoreText.text = currentScore.ToString();
         highScore = PlayerPrefs.GetInt("TetrisHighScore");
         highScoreText.text = highScore.ToString();
+
+        fragments = PlayerPrefs.GetInt("TetrisFragments");
+        tetrisFragmentText.text = fragments.ToString();
 
         musicSource.volume = PlayerPrefs.GetFloat("TetrisVolume");
         SelectSong();
@@ -346,6 +353,9 @@ public class Board : MonoBehaviour
 
             row++;
         }
+
+        int fragmentsEarned = Random.Range(0, 6);
+        UpdateFragments(fragmentsEarned);
     }
 
     private void CalculateLevel()
@@ -403,6 +413,14 @@ public class Board : MonoBehaviour
             highScoreText.text = highScore.ToString();
             PlayerPrefs.SetInt("TetrisHighScore", highScore);
         }
+    }
+
+    void UpdateFragments(int fragmentsEarned)
+    {
+        fragments += fragmentsEarned;
+        PlayerPrefs.SetInt("TetrisFragments", fragments);
+
+        tetrisFragmentText.text = fragments.ToString();
     }
 
     public void Restart()
