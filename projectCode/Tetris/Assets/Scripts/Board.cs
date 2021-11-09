@@ -38,6 +38,29 @@ public class Board : MonoBehaviour
     [SerializeField]
     private GameObject gameOverPanel;
 
+    AudioSource musicSource;
+    [SerializeField]
+    AudioClip[] songs;
+
+    [SerializeField]
+    AudioSource sfxSource;
+    [SerializeField]
+    AudioClip moveSound;
+    [SerializeField]
+    AudioClip rotateSound;
+    [SerializeField]
+    AudioClip lockSound;
+    [SerializeField]
+    AudioClip clearSound;
+    [SerializeField]
+    AudioClip tetrisSound;
+    [SerializeField]
+    AudioClip levelUpSound;
+    [SerializeField]
+    AudioClip gameOverSound;
+
+    float volume;
+
     public RectInt Bounds
     {
         get
@@ -51,6 +74,7 @@ public class Board : MonoBehaviour
     {
         this.tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
+        musicSource = GetComponent<AudioSource>();
 
         // looping through and initializing all tetrominos
         for (int i = 0; i <  this.tetrominos.Length; i++)
@@ -66,6 +90,11 @@ public class Board : MonoBehaviour
         currentScoreText.text = currentScore.ToString();
         highScore = PlayerPrefs.GetInt("TetrisHighScore");
         highScoreText.text = highScore.ToString();
+
+        musicSource.volume = PlayerPrefs.GetFloat("TetrisVolume");
+        SelectSong();
+
+        volume = PlayerPrefs.GetFloat("TetrisVolume"); 
 
         if (PlayerPrefs.GetInt("TetrisColor") == 1)
         {
@@ -188,6 +217,8 @@ public class Board : MonoBehaviour
         int totalTime = PlayerPrefs.GetInt("TetrisTimeSpent");
         totalTime += (int)currentTime;
         PlayerPrefs.SetInt("TetrisTimeSpent", totalTime);
+
+        PlayGameOverSound();
 
         gameOverPanel.SetActive(true);
     }
@@ -318,6 +349,8 @@ public class Board : MonoBehaviour
 
     private void CalculateLevel()
     {
+        int priorLevel = currentLevel;
+
         currentLevel = rowsCleared / 10;
         levelText.text = currentLevel.ToString();
 
@@ -325,10 +358,24 @@ public class Board : MonoBehaviour
         {
             PlayerPrefs.SetInt("TetrisHighRow", rowsCleared);
         }
+
+        if (priorLevel != currentLevel)
+        {
+            PlayLevelUpSound();
+        }
     }
 
     private void CalculateScore(int linesCleared)
     {
+        if (linesCleared == 4)
+        {
+            PlayTetrisSound();
+        }
+        else
+        {
+            PlayClearSound();
+        }
+
         switch(linesCleared)
         {
             case 1:
@@ -355,5 +402,46 @@ public class Board : MonoBehaviour
             highScoreText.text = highScore.ToString();
             PlayerPrefs.SetInt("TetrisHighScore", highScore);
         }
+    }
+
+    void SelectSong()
+    {
+        musicSource.clip = songs[PlayerPrefs.GetInt("TetrisSong")];
+        musicSource.Play();
+    }
+
+    public void PlayMoveSound()
+    {
+        sfxSource.PlayOneShot(moveSound, volume);
+    }
+
+    public void PlayRotateSound()
+    {
+        sfxSource.PlayOneShot(rotateSound, volume);
+    }
+
+    public void PlayLockSound()
+    {
+        sfxSource.PlayOneShot(lockSound, volume);
+    }
+
+    public void PlayClearSound()
+    {
+        sfxSource.PlayOneShot(clearSound, volume);
+    }
+
+    public void PlayTetrisSound()
+    {
+        sfxSource.PlayOneShot(tetrisSound, volume);
+    }
+
+    public void PlayLevelUpSound()
+    {
+        sfxSource.PlayOneShot(levelUpSound, volume);
+    }
+
+    public void PlayGameOverSound()
+    {
+        sfxSource.PlayOneShot(gameOverSound, volume);
     }
 }

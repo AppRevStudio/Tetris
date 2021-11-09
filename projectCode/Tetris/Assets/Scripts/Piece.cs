@@ -105,12 +105,12 @@ public class Piece : MonoBehaviour
         {
             continue;
         }
-
         Lock();
     }
 
     private void Lock()
     {
+        this.board.PlayLockSound();
         this.board.Set(this);
         this.board.ClearLines();
         this.board.SpawnPiece();
@@ -129,6 +129,7 @@ public class Piece : MonoBehaviour
         {
             this.position = newPos;
             this.lockTime = 0f;
+            this.board.PlayMoveSound();
         }
 
         return valid;
@@ -147,6 +148,10 @@ public class Piece : MonoBehaviour
         {
             this.rotationIndex = originalRotation;
             ApplyRotationMatrix(-direction);
+        }
+        else
+        {
+            this.board.PlayRotateSound();
         }
     }
 

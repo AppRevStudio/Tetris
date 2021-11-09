@@ -113,6 +113,10 @@ public class MenuController : MonoBehaviour
         {
             PlayerPrefs.SetFloat("TetrisVolume", 0.5f);
         }
+        if (!PlayerPrefs.HasKey("TetrisSong"))
+        {
+            PlayerPrefs.SetInt("TetrisSong", 0);
+        }
         if (!PlayerPrefs.HasKey("TetrisColor"))
         {
             PlayerPrefs.SetInt("TetrisColor", 1);
