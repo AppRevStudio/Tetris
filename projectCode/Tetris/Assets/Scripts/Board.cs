@@ -102,7 +102,9 @@ public class Board : MonoBehaviour
         musicSource.volume = PlayerPrefs.GetFloat("TetrisVolume");
         SelectSong();
 
-        volume = PlayerPrefs.GetFloat("TetrisVolume"); 
+        volume = PlayerPrefs.GetFloat("TetrisVolume");
+
+        UpdateTetrominoSpeed();
 
         if (PlayerPrefs.GetInt("TetrisColor") == 1)
         {
@@ -374,6 +376,79 @@ public class Board : MonoBehaviour
         {
             PlayLevelUpSound();
         }
+
+        UpdateTetrominoSpeed();
+    }
+
+    void UpdateTetrominoSpeed()
+    {
+        float stepDelay;
+
+        switch(currentLevel)
+        {
+            case 0:
+                stepDelay = 0.8f;
+                break;
+            case 1:
+                stepDelay = 0.72f;
+                break;
+            case 2:
+                stepDelay = 0.64f;
+                break;
+            case 3:
+                stepDelay = 0.55f;
+                break;
+            case 4:
+                stepDelay = 0.47f;
+                break;
+            case 5:
+                stepDelay = 0.39f;
+                break;
+            case 6:
+                stepDelay = 0.3f;
+                break;
+            case 7:
+                stepDelay = 0.22f;
+                break;
+            case 8:
+                stepDelay = 0.14f;
+                break;
+            case 9:
+                stepDelay = 0.1f;
+                break;
+            case 10:
+            case 11:
+            case 12:
+                stepDelay = 0.09f;
+                break;
+            case 13:
+            case 14:
+            case 15:
+                stepDelay = 0.07f;
+                break;
+            case 16:
+            case 17:
+            case 18:
+                stepDelay = 0.05f;
+                break;
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+            case 28:
+                stepDelay = 0.04f;
+                break;
+            default:
+                stepDelay = 0.017f;
+                break;
+        }
+
+        activePiece.UpdateStepDelay(stepDelay);
     }
 
     private void CalculateScore(int linesCleared)

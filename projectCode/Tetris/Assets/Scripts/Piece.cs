@@ -223,4 +223,9 @@ public class Piece : MonoBehaviour
             return min + (input - min) % (max - min);
         }
     }
+
+    public void UpdateStepDelay(float newStepDelay)
+    {
+        stepDelay = newStepDelay;
+    }
 }
