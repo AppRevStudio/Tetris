@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Board : MonoBehaviour
@@ -402,6 +403,16 @@ public class Board : MonoBehaviour
             highScoreText.text = highScore.ToString();
             PlayerPrefs.SetInt("TetrisHighScore", highScore);
         }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void Return()
+    {
+        SceneManager.LoadScene("MenuScene");
     }
 
     void SelectSong()
