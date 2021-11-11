@@ -145,6 +145,15 @@ public class MenuController : MonoBehaviour
             PlayerPrefs.SetInt("TetrisMute", 0);
         }
 
+        if (PlayerPrefs.GetInt("TetrisMute") == 1)
+        {
+            AudioListener.pause = true;
+        }
+        else
+        {
+            AudioListener.pause = false;
+        }
+
         highScoreText.text = "High Score: " + PlayerPrefs.GetInt("TetrisHighScore");
         highRowText.text = "Rows Cleared: " + PlayerPrefs.GetInt("TetrisHighRow");
 
