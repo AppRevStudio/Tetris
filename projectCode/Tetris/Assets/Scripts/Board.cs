@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 
 public class Board : MonoBehaviour
@@ -65,6 +66,12 @@ public class Board : MonoBehaviour
     AudioClip gameOverSound;
 
     float volume;
+    bool muteMusic;
+
+    [SerializeField]
+    Image soundOnIcon;
+    [SerializeField]
+    Image soundOffIcon;
 
     public RectInt Bounds
     {
@@ -103,6 +110,18 @@ public class Board : MonoBehaviour
         SelectSong();
 
         volume = PlayerPrefs.GetFloat("TetrisVolume");
+
+        if (PlayerPrefs.GetInt("TetrisMute") == 1)
+        {
+            AudioListener.pause = true;
+            muteMusic = true;
+        }
+        else
+        {
+            AudioListener.pause = false;
+            muteMusic = false;
+        }
+        UpdateMuteIcon();
 
         UpdateTetrominoSpeed();
 
@@ -506,6 +525,38 @@ public class Board : MonoBehaviour
     public void Return()
     {
         SceneManager.LoadScene("MenuScene");
+    }
+
+    public void ToggleMute()
+    {
+        if (!muteMusic)
+        {
+            muteMusic = true;
+            AudioListener.pause = true;
+            PlayerPrefs.SetInt("TetrisMute", 1);
+        }
+        else
+        {
+            muteMusic = false;
+            AudioListener.pause = false;
+            PlayerPrefs.SetInt("TetrisMute", 0);
+        }
+
+        UpdateMuteIcon();
+    }
+
+    void UpdateMuteIcon()
+    {
+        if (!muteMusic)
+        {
+            soundOnIcon.enabled = true;
+            soundOffIcon.enabled = false;
+        }
+        else
+        {
+            soundOnIcon.enabled = false;
+            soundOffIcon.enabled = true;
+        }
     }
 
     void SelectSong()
