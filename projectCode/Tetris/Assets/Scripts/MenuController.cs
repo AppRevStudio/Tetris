@@ -75,10 +75,12 @@ public class MenuController : MonoBehaviour
 
         if (PlayerPrefs.GetInt("TetrisMute") == 1)
         {
+            AudioListener.volume = 0;
             AudioListener.pause = true;
         }
         else
         {
+            AudioListener.volume = 1;
             AudioListener.pause = false;
         }
     }

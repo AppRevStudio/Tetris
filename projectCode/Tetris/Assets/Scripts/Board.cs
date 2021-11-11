@@ -113,11 +113,13 @@ public class Board : MonoBehaviour
 
         if (PlayerPrefs.GetInt("TetrisMute") == 1)
         {
+            AudioListener.volume = 0;
             AudioListener.pause = true;
             muteMusic = true;
         }
         else
         {
+            AudioListener.volume = 1;
             AudioListener.pause = false;
             muteMusic = false;
         }
@@ -532,12 +534,14 @@ public class Board : MonoBehaviour
         if (!muteMusic)
         {
             muteMusic = true;
+            AudioListener.volume = 0;
             AudioListener.pause = true;
             PlayerPrefs.SetInt("TetrisMute", 1);
         }
         else
         {
             muteMusic = false;
+            AudioListener.volume = 1;
             AudioListener.pause = false;
             PlayerPrefs.SetInt("TetrisMute", 0);
         }
