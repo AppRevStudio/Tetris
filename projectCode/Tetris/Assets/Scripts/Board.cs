@@ -511,6 +511,24 @@ public class Board : MonoBehaviour
     void SelectSong()
     {
         musicSource.clip = songs[PlayerPrefs.GetInt("TetrisSong")];
+
+        if (PlayerPrefs.GetInt("TetrisSong") == 5)
+        {
+            volume = PlayerPrefs.GetFloat("TetrisVolume");
+            float adjustedVolume = volume * 1.5f;
+            if (adjustedVolume > 1)
+            {
+                adjustedVolume = 1;
+            }
+
+            musicSource.volume = adjustedVolume;
+        }
+        else
+        {
+            volume = PlayerPrefs.GetFloat("TetrisVolume");
+            musicSource.volume = volume;
+        }
+
         musicSource.Play();
     }
 

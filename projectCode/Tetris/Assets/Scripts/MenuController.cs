@@ -22,6 +22,8 @@ public class MenuController : MonoBehaviour
     [SerializeField]
     private GameObject homePanel;
     [SerializeField]
+    private GameObject shopPanel;
+    [SerializeField]
     private GameObject statsPanel;
     [SerializeField]
     private GameObject settingsPanel;
@@ -49,7 +51,6 @@ public class MenuController : MonoBehaviour
     [SerializeField]
     private float menuMusicMultiplier = 0.75f;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +77,18 @@ public class MenuController : MonoBehaviour
     public void Play()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void EnableShopPanel()
+    {
+        homePanel.SetActive(false);
+        shopPanel.SetActive(true);
+    }
+
+    public void DisableShopPanel()
+    {
+        shopPanel.SetActive(false);
+        homePanel.SetActive(true);
     }
 
     public void EnableStatsPanel()
