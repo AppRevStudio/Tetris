@@ -42,7 +42,7 @@ public class ShopItem : MonoBehaviour
 
     private void Awake()
     {
-        shop = FindObjectOfType<Shop>();
+        shop = FindFirstObjectByType<Shop>();
 
         songNameText.text = songName;
         buyText.text = price.ToString();

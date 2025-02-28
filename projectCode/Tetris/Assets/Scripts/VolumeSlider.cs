@@ -19,12 +19,12 @@ public class VolumeSlider : MonoBehaviour
     void Start()
     {
         volumeBar = GetComponent<Slider>();
-        mc = FindObjectOfType<MenuController>();
+        mc = FindFirstObjectByType<MenuController>();
     }
 
     private void OnEnable()
     {
-        mc = FindObjectOfType<MenuController>();
+        mc = FindFirstObjectByType<MenuController>();
         UpdateValue(PlayerPrefs.GetFloat("TetrisVolume"));
     }
 

@@ -206,6 +206,7 @@ public class Board : MonoBehaviour
             for (int i = 0; i < priorData.cells.Length; i++)
             {
                 Vector3Int tilePos = (Vector3Int)priorData.cells[i] + (Vector3Int)nextSpawnPos;
+                // print(tilePos);
                 this.tilemap.SetTile(tilePos, null);
             }
         }
@@ -226,6 +227,7 @@ public class Board : MonoBehaviour
         {
             Vector3Int tilePos = (Vector3Int)data.cells[i] + (Vector3Int)nextSpawnPos;
             this.tilemap.SetTile(tilePos, data.tile);
+            // print(nextSpawnPos);
         }
     }
 

@@ -87,7 +87,7 @@ public class MenuController : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
     public void EnableShopPanel()
